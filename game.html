@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <link rel="stylesheet" href="CSS/game.css">
+</head>
+<body>
+
+    <header>
+        <button id="back-btn">← Back</button>
+
+        <h1>🧠 Memory Card Game</h1>
+
+        <button id="restart-btn">🔄 Restart</button>
+    </header>
+
+    <main>
+
+        <!-- Game Information -->
+        <section class="game-info">
+
+            <div class="player">
+                <h2>😊 You</h2>
+                <p>Score: <span id="player-score">0</span></p>
+            </div>
+
+            <div class="game-details">
+                <p>Difficulty: <span id="difficulty">Easy</span></p>
+                <p>Moves: <span id="moves">0</span></p>
+                <p>Time: <span id="timer">00:00</span></p>
+            </div>
+
+            <div class="player">
+                <h2>🤖 Computer</h2>
+                <p>Score: <span id="computer-score">0</span></p>
+            </div>
+
+        </section>
+
+        <!-- Memory Cards -->
+        <section class="game-board">
+
+            <!-- 16 Cards (Easy Level) -->
+
+            <div class="card" data-id="1"></div>
+            <div class="card" data-id="2"></div>
+            <div class="card" data-id="3"></div>
+            <div class="card" data-id="4"></div>
+
+            <div class="card" data-id="5"></div>
+            <div class="card" data-id="6"></div>
+            <div class="card" data-id="7"></div>
+            <div class="card" data-id="8"></div>
+
+            <div class="card" data-id="9"></div>
+            <div class="card" data-id="10"></div>
+            <div class="card" data-id="11"></div>
+            <div class="card" data-id="12"></div>
+
+            <div class="card" data-id="13"></div>
+            <div class="card" data-id="14"></div>
+            <div class="card" data-id="15"></div>
+            <div class="card" data-id="16"></div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Memory Card Game | Have Fun! 🎮</p>
+    </footer>
+
+    <script src="JS/game.js"></script>
+
+</body>
+</html>

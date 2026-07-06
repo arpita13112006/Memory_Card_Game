@@ -1,0 +1,163 @@
+/* ---------- Reset ---------- */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ---------- Body ---------- */
+
+body{
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* ---------- Main ---------- */
+
+main{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------- Main Card ---------- */
+
+.card{
+
+    width: 650px;
+    max-width: 90%;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    background: rgba(189, 187, 187, 0.18);
+
+    backdrop-filter: blur(12px);
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.4);
+
+    text-align: center;
+}
+
+/* ---------- Back Button ---------- */
+
+.back-btn{
+
+    padding: 10px 18px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    margin-bottom: 20px;
+
+    transition: .3s;
+}
+
+.back-btn:hover{
+
+    transform: translateX(-5px);
+
+}
+
+/* ---------- Heading ---------- */
+
+h1{
+
+    margin-bottom: 10px;
+
+    color: rgb(9, 9, 9);
+
+}
+
+.subtitle{
+
+    color: rgb(27, 27, 27);
+
+    margin-bottom: 35px;
+
+    font-size: 18px;
+
+}
+
+/* ---------- Difficulty Cards ---------- */
+
+.difficulty-container{
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+
+}
+
+/* ---------- Individual Card ---------- */
+
+.difficulty-card{
+
+    flex: 1;
+
+    min-width: 170px;
+
+    padding: 25px;
+
+    background: rgba(239, 235, 235, 0.855);
+
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+.difficulty-card:hover{
+
+    transform: translateY(-10px);
+
+    background: rgba(255,255,255,.4);
+
+}
+
+.difficulty-card h2{
+
+    margin-bottom: 10px;
+
+}
+
+.difficulty-card p{
+
+    margin-bottom: 10px;
+
+}
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:700px){
+
+    .difficulty-container{
+
+        flex-direction: column;
+
+    }
+
+}
