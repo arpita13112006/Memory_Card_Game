@@ -149,7 +149,29 @@ h1{
     margin-bottom: 10px;
 
 }
+#game-screen{
+    display: none;
+}
+.game-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
 
+.game-info{
+    display:flex;
+    justify-content:space-around;
+    margin-bottom:25px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#game-board{
+    display:grid;
+    gap:15px;
+    justify-content:center;
+}
 /* ---------- Responsive ---------- */
 
 @media(max-width:700px){

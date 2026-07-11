@@ -10,40 +10,75 @@
 
     <main>
 
-        <section class="card">
+       <section class="card">
 
-            <button class="back-btn">← Back</button>
-            <h1>Choose Difficulty</h1>
+    <!-- Difficulty Selection Screen -->
+    <div id="difficulty-screen">
 
-            <p class="subtitle">
-                Select a level to challenge your memory!
-            </p>
+        <button class="back-btn">← Back</button>
 
-            <div class="difficulty-container">
+        <h1>Choose Difficulty</h1>
 
-                <div class="difficulty-card" id="easy-level">
-                    <h2>🟢 Easy</h2>
-                    <p>4 × 4 Cards</p>
-                    <small>Recommended for Beginners</small>
-                </div>
+        <p class="subtitle">
+            Select a level to challenge your memory!
+        </p>
 
-                <div class="difficulty-card" id="medium-level">
-                    <h2>🟡 Medium</h2>
-                    <p>4 × 6 Cards</p>
-                    <small>Challenge Yourself</small>
-                </div>
+        <div class="difficulty-container">
 
-                <div class="difficulty-card" id="hard-level">
-                    <h2>🔴 Hard</h2>
-                    <p>6 × 6 Cards</p>
-                    <small>Memory Master</small>
-                </div>
-
+            <div class="difficulty-card" id="easy-level">
+                <h2>🟢 Easy</h2>
+                <p>4 × 4 Cards</p>
+                <small>Recommended for Beginners</small>
             </div>
 
-        </section>
+            <div class="difficulty-card" id="medium-level">
+                <h2>🟡 Medium</h2>
+                <p>4 × 6 Cards</p>
+                <small>Challenge Yourself</small>
+            </div>
+
+            <div class="difficulty-card" id="hard-level">
+                <h2>🔴 Hard</h2>
+                <p>6 × 6 Cards</p>
+                <small>Memory Master</small>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Game Screen -->
+   <div id="game-screen">
+
+    <div class="game-header">
+
+        <button id="game-back">← Back</button>
+
+        <h1>Memory Card Game</h1>
+
+        <button id="restart-btn">Restart</button>
+
+    </div>
+
+    <div class="game-info">
+
+        <p>⏱ Time : <span id="timer">00:00</span></p>
+
+        <p>🎯 Moves : <span id="moves">0</span></p>
+
+    </div>
+
+    <div id="game-board">
+
+    </div>
+
+</div>
+
+</section>
+
 
     </main>
 
 </body>
+<script src="JS/game.js"></script>
 </html>
