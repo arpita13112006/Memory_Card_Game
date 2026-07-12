@@ -172,6 +172,60 @@ h1{
     gap:15px;
     justify-content:center;
 }
+.card-box{
+    width:100px;
+    height:100px;
+
+    background:white;
+
+    border-radius:10px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:45px;
+
+    cursor:pointer;
+}
+/* ---------- Score Board ---------- */
+
+.score-board{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:20px 0;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#turn-text{
+    margin-bottom:20px;
+    color:#fff;
+    text-align:center;
+}
+
+/* ---------- Game Buttons ---------- */
+
+#game-back,
+#restart-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* ---------- Card ---------- */
+
+.card-box{
+    user-select:none;
+    transition:0.3s;
+}
+
+.card-box:hover{
+    transform:scale(1.05);
+}
 /* ---------- Responsive ---------- */
 
 @media(max-width:700px){
