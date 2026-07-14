@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online card</title>
+    <link rel="stylesheet" href="CSS/online.css">
+</head>
+<body>
+    <main>
+
+       <section class="card">
+        <div class="online-container">
+
+        <h1>🎮 Play Online </h1>
+        <p class="subtitle">
+            Play with your friends in real time
+        </p>
+        <div class="create-section">
+
+    <button id="create-room">Create Room</button>
+
+    <div id="room-display" style="display:none;">
+
+        <h3>Your Room Code</h3>
+
+        <h2 id="generated-code"></h2>
+
+        <p>Share this code with your friend.</p>
+
+    </div>
+
+</div>
+            <h3 class="or">-----OR------</h3>
+            <div class="join-section">
+
+    <p>Enter Room Code</p>
+
+    <input
+        type="text"
+        id="room-code"
+        placeholder="Enter Room Code"
+        maxlength="6"
+         autocomplete="off">
+
+    <button id="join-room">Join Room</button>
+
+</div>
+
+
+<a href="index.html"><button class="back-btn">← Back</button></a>
+        </div>
+</section>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="JS/online.js"></script>
+</body>
+</html>
