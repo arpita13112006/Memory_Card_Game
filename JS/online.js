@@ -9,6 +9,11 @@ const roomDisplay = document.getElementById("room-display");
 const generatedCode = document.getElementById("generated-code");
 
 const roomInput = document.getElementById("room-code");
+const roomSection = document.getElementById("room-section");
+const gameSection = document.getElementById("game-section");
+
+roomSection.style.display = "block";
+gameSection.style.display = "none";
 
 // =======================
 // GENERATE ROOM CODE
@@ -82,6 +87,36 @@ socket.on("roomNotFound", function(){
 
 socket.on("startGame", function(){
 
-    alert("🎉 Both Players Connected!");
+   document.getElementById("room-section").style.display = "none";
+
+    document.getElementById("game-section").style.display = "block";
+
+    roomSection.style.display = "none";
+    gameSection.style.display = "block";
+
+});
+socket.on("loadBoard", function(board){
+
+    const gameBoard = document.getElementById("game-board");
+
+    gameBoard.innerHTML = "";
+
+    gameBoard.style.gridTemplateColumns = "repeat(4,100px)";
+
+    board.forEach(function(emoji){
+
+        const card = document.createElement("div");
+
+        card.classList.add("card-box");
+
+        card.textContent = "?";
+
+        card.dataset.emoji = emoji;
+
+        card.dataset.state = "hidden";
+
+        gameBoard.appendChild(card);
+
+    });
 
 });

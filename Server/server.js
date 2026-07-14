@@ -27,9 +27,16 @@ io.on("connection", function(socket){
 
         socket.join(roomCode);
 
-        rooms[roomCode] = [socket.id];
+        rooms[roomCode] = {
+
+    players: [socket.id],
+
+    board: shuffle(emojis)
+
+};
 
         console.log("Room Created : " + roomCode);
+        console.log(rooms);
 
     });
 
@@ -39,11 +46,12 @@ io.on("connection", function(socket){
 
             socket.join(roomCode);
 
-            rooms[roomCode].push(socket.id);
+            rooms[roomCode].players.push(socket.id);
 
             console.log("Player Joined : " + roomCode);
 
             io.to(roomCode).emit("startGame");
+            io.to(roomCode).emit("loadBoard", rooms[roomCode].board);
 
         }
         else{
@@ -60,6 +68,29 @@ io.on("connection", function(socket){
 
     });
 });
+
+const emojis = [
+"🐶","🐶",
+"🐱","🐱",
+"🐼","🐼",
+"🐸","🐸",
+"🐵","🐵",
+"🦊","🦊",
+"🐰","🐰",
+"🐻","🐻"
+];
+
+function shuffle(array){
+
+    const temp = [...array];
+
+    temp.sort(() => Math.random() - 0.5);
+
+    return temp;
+
+}
+
+
 server.listen(3000, function(){
 
     console.log("✅ Server Running...");
