@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Memory Game</title>
+
+    <link rel="stylesheet" href="CSS/online-game.css">
+</head>
+<body>
+
+<main>
+
+<div class="game-container">
+
+    <div class="top-bar">
+
+        <a href="online.html"><button id="exit-btn">← Exit</button></a>
+
+        <button id="restart-btn" disabled>🔄 Restart</button>
+
+    </div>
+
+    <div class="game-info">
+
+        <p>⏱ Time : <span id="timer">00:00</span></p>
+
+        <p>🎯 Moves : <span id="moves">0</span></p>
+
+    </div>
+
+    <div class="score-board">
+
+        <p>😊 You : <span id="player-score">0</span></p>
+
+        <p>👤 Friend : <span id="friend-score">0</span></p>
+
+    </div>
+
+    <h2 id="turn-text">
+        Waiting for opponent...
+    </h2>
+
+    <div id="game-board">
+
+    </div>
+
+</div>
+
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="JS/online-game.js"></script>
+
+</body>
+</html>

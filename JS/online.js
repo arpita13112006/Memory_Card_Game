@@ -12,9 +12,11 @@ const roomInput = document.getElementById("room-code");
 const roomSection = document.getElementById("room-section");
 const gameSection = document.getElementById("game-section");
 
-roomSection.style.display = "block";
-gameSection.style.display = "none";
+socket.on("startGame", function(){
 
+    window.location.href = "online-game.html";
+
+});
 // =======================
 // GENERATE ROOM CODE
 // =======================
@@ -49,6 +51,7 @@ createRoomBtn.addEventListener("click",function(){
     generatedCode.textContent = roomCode;
 
     roomDisplay.style.display = "block";
+    localStorage.setItem("roomCode", roomCode);
     socket.emit("createRoom", roomCode);
 
 });
@@ -75,7 +78,7 @@ joinRoomBtn.addEventListener("click", function(){
         return;
 
     }
-
+    localStorage.setItem("roomCode", roomCode);
     socket.emit("joinRoom", roomCode);
 
 });
