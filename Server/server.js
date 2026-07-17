@@ -51,7 +51,9 @@ socket.on("createRoom", function(roomCode){
 
         matched: [],
 
-        scores: [0,0]
+        scores: [0,0],
+        timer:0,
+        moves:0
 
     };
 
@@ -140,36 +142,89 @@ socket.on("createRoom", function(roomCode){
 
     if(room.flipped.length === 2){
 
+         room.moves++;
+
+    io.to(data.roomCode).emit("movesUpdate", room.moves);
+
+
         const first = room.flipped[0];
         const second = room.flipped[1];
 
         if(room.board[first] === room.board[second]){
 
-            room.matched.push(first, second);
 
-            io.to(data.roomCode).emit("matchFound",{
-                first:first,
-                second:second
-            });
+    room.matched.push(first, second);
 
-            room.flipped = [];
+    room.scores[room.turn]++;
 
-        }else{
+io.to(data.roomCode).emit("scoreUpdate", room.scores);
+
+    // Same player ki turn rahegi
+    io.to(data.roomCode).emit("matchFound",{
+        first:first,
+        second:second
+    });
+
+    room.flipped = [];
+
+    io.to(data.roomCode).emit(
+        "turnUpdate",
+        room.players[room.turn]
+    );
+
+}else{
 
             setTimeout(function(){
 
-                io.to(data.roomCode).emit("hideCards",{
-                    first:first,
-                    second:second
-                });
+    io.to(data.roomCode).emit("hideCards",{
+        first:first,
+        second:second
+    });
 
-                room.flipped = [];
+    room.flipped = [];
 
-            },1000);
+    // Turn change
+    room.turn = 1 - room.turn;
+
+    console.log("Turn Changed");
+        console.log("Current Turn :", room.turn);
+        console.log("Players :", room.players);
+
+    io.to(data.roomCode).emit(
+        "turnUpdate",
+        room.players[room.turn]
+    );
+
+},1000);
 
         }
 
     }
+
+});
+
+socket.on("restartGame",function(roomCode){
+
+    if(!rooms[roomCode]){
+        return;
+    }
+
+    rooms[roomCode].board = shuffle(emojis);
+
+    rooms[roomCode].matched = [];
+
+    rooms[roomCode].flipped = [];
+
+    rooms[roomCode].scores = [0,0];
+
+    rooms[roomCode].turn = 0;
+
+    rooms[roomCode].moves = 0;
+
+    io.to(roomCode).emit(
+        "restartBoard",
+        rooms[roomCode].board
+    );
 
 });
 
@@ -179,7 +234,9 @@ socket.on("createRoom", function(roomCode){
 
     });
 
-});   // <-- io.on yahan close hoga
+});   
+
+
 
 server.listen(3000, function(){
 
