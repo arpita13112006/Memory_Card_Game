@@ -8,7 +8,7 @@ const io = new Server(server);
 
 app.use(express.static("../"));
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
     res.sendFile(__dirname + "/../index.html");
 });
 
@@ -25,7 +25,7 @@ const emojis = [
     "🐻","🐻"
 ];
 
-function shuffle(array){
+function shuffle(array) {
     const temp = [...array];
     temp.sort(() => Math.random() - 0.5);
     return temp;
@@ -33,175 +33,141 @@ function shuffle(array){
 
 io.on("connection", function(socket){
 
-    console.log("🟢 New User Connected");
+    console.log("🟢 New User Connected :", socket.id);
 
-    socket.on("createRoom", function(roomCode){
+socket.on("createRoom", function(roomCode){
 
-        socket.join(roomCode);
+    socket.join(roomCode);
 
-        rooms[roomCode] = {
-            players: [socket.id],
-            board: shuffle(emojis),
-             turn: 0,
-             flipped: [],
-    matched: [],
-    scores: [0, 0]
-        };
+    rooms[roomCode] = {
 
-        console.log("Room Created :", roomCode);
-        console.log(rooms);
-    });
+        players: [socket.id],
+
+        board: shuffle(emojis),
+
+        turn: 0,
+
+        flipped: [],
+
+        matched: [],
+
+        scores: [0,0]
+
+    };
+
+    console.log("Room Created :", roomCode);
+
+    console.log(rooms);
+
+});
 
     socket.on("joinRoom", function(roomCode){
 
-        if(rooms[roomCode]){
+    if(!rooms[roomCode]){
 
-            socket.join(roomCode);
+        socket.emit("roomNotFound");
 
-            rooms[roomCode].players.push(socket.id);
+        return;
 
-            console.log("Player Joined :", roomCode);
+    }
 
-            io.to(roomCode).emit("startGame");
+    socket.join(roomCode);
 
-            io.to(roomCode).emit("turnUpdate", rooms[roomCode].players[0]);
+    rooms[roomCode].players.push(socket.id);
 
-        }else{
+    console.log("Player Joined :", roomCode);
 
-            socket.emit("roomNotFound");
+    io.to(roomCode).emit("startGame");
 
-        }
-
-    });
-
-     socket.on("rejoinRoom", function(roomCode){
-
-        if(rooms[roomCode]){
-
-            socket.join(roomCode);
-
-            console.log("Player Rejoined : " + roomCode);
-
-            // io.to(roomCode).emit("turnUpdate", "Your Turn");
-
-        }
-
-    });
-
-    socket.on("loadBoard", function(roomCode){
-
-        if(rooms[roomCode]){
-
-            socket.emit("loadBoard", rooms[roomCode].board);
-
-        }
-
-    });
-
-    socket.on("flipCard", function(data){
+});
+    socket.on("rejoinRoom", function(data){
 
     const room = rooms[data.roomCode];
 
     if(!room){
-
         return;
-
     }
 
-    // Agar card pehle hi matched hai
+    socket.join(data.roomCode);
+
+    if(data.role === "host"){
+        room.players[0] = socket.id;
+    }
+    else{
+        room.players[1] = socket.id;
+    }
+
+    console.log("Player Rejoined :", data.roomCode);
+    console.log(room.players);
+
+    socket.emit("loadBoard", room.board);
+
+    io.to(data.roomCode).emit("turnUpdate", room.players[room.turn]);
+
+});
+
+    socket.on("loadBoard", function(roomCode){
+
+    if(!rooms[roomCode]){
+        return;
+    }
+
+    socket.emit("loadBoard", rooms[roomCode].board);
+
+});
+
+    socket.on("flipCard", function(data){
+
+    console.log("Flip Request :", data);
+
+    const room = rooms[data.roomCode];
+
+    if(!room){
+        return;
+    }
+
     if(room.matched.includes(data.index)){
-
         return;
-
     }
 
-    // Agar card pehle hi flip ho chuka hai
     if(room.flipped.includes(data.index)){
-
         return;
-
     }
 
     room.flipped.push(data.index);
 
-    // Agar 2 cards flip ho gaye
-if(room.flipped.length === 2){
+    io.to(data.roomCode).emit("flipCard", data.index);
 
-    const firstIndex = room.flipped[0];
+    if(room.flipped.length === 2){
 
-    const secondIndex = room.flipped[1];
+        const first = room.flipped[0];
+        const second = room.flipped[1];
 
-    const firstEmoji = room.board[firstIndex];
+        if(room.board[first] === room.board[second]){
 
-    const secondEmoji = room.board[secondIndex];
+            room.matched.push(first, second);
 
-    if(firstEmoji === secondEmoji){
-
-        room.matched.push(firstIndex);
-        room.matched.push(secondIndex);
-
-        room.flipped = [];
-
-        io.to(data.roomCode).emit("matchFound", {
-            first:firstIndex,
-            second:secondIndex
-        });
-
-    }
-
-    else{
-
-        setTimeout(function(){
-
-            io.to(data.roomCode).emit("hideCards", {
-                first:firstIndex,
-                second:secondIndex
+            io.to(data.roomCode).emit("matchFound",{
+                first:first,
+                second:second
             });
 
             room.flipped = [];
 
-        },1000);
+        }else{
 
-    }
+            setTimeout(function(){
 
-}
+                io.to(data.roomCode).emit("hideCards",{
+                    first:first,
+                    second:second
+                });
 
-    io.to(data.roomCode).emit("flipCard", data.index);
+                room.flipped = [];
 
-});
-socket.on("hideCards", function(data){
+            },1000);
 
-    const cards = document.querySelectorAll(".card-box");
-
-    cards[data.first].textContent = "?";
-
-    cards[data.second].textContent = "?";
-
-});
-socket.on("matchFound", function(data){
-
-    const cards = document.querySelectorAll(".card-box");
-
-    cards[data.first].dataset.state = "matched";
-
-    cards[data.second].dataset.state = "matched";
-
-});
-socket.on("turnUpdate", function(playerId){
-
-    if(socket.id === playerId){
-
-        myTurn = true;
-
-        document.getElementById("turn-text").textContent = "🟢 Your Turn";
-
-    }
-
-    else{
-
-        myTurn = false;
-
-        document.getElementById("turn-text").textContent = "🔴 Friend's Turn";
+        }
 
     }
 

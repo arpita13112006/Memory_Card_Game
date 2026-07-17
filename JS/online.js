@@ -52,6 +52,7 @@ createRoomBtn.addEventListener("click",function(){
 
     roomDisplay.style.display = "block";
     localStorage.setItem("roomCode", roomCode);
+    localStorage.setItem("role", "host");
     socket.emit("createRoom", roomCode);
 
 });
@@ -79,6 +80,7 @@ joinRoomBtn.addEventListener("click", function(){
 
     }
     localStorage.setItem("roomCode", roomCode);
+    localStorage.setItem("role", "guest");
     socket.emit("joinRoom", roomCode);
 
 });
@@ -88,38 +90,5 @@ socket.on("roomNotFound", function(){
 
 });
 
-socket.on("startGame", function(){
 
-   document.getElementById("room-section").style.display = "none";
-
-    document.getElementById("game-section").style.display = "block";
-
-    roomSection.style.display = "none";
-    gameSection.style.display = "block";
-
-});
-socket.on("loadBoard", function(board){
-
-    const gameBoard = document.getElementById("game-board");
-
-    gameBoard.innerHTML = "";
-
-    gameBoard.style.gridTemplateColumns = "repeat(4,100px)";
-
-    board.forEach(function(emoji){
-
-        const card = document.createElement("div");
-
-        card.classList.add("card-box");
-
-        card.textContent = "?";
-
-        card.dataset.emoji = emoji;
-
-        card.dataset.state = "hidden";
-
-        gameBoard.appendChild(card);
-
-    });
-
-});
+ 

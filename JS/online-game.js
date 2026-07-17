@@ -13,6 +13,7 @@ const socket = io();
 // =======================
 
 const roomCode = localStorage.getItem("roomCode");
+const role = localStorage.getItem("role");
 
 let firstCard = null;
 
@@ -29,7 +30,10 @@ console.log("Room Code :", roomCode);
 // =======================
 // LOAD BOARD
 // =======================
-socket.emit("rejoinRoom", roomCode);
+socket.emit("rejoinRoom",{
+    roomCode: roomCode,
+    role: role
+});
 
 socket.emit("loadBoard", roomCode);
 
@@ -64,6 +68,9 @@ function createBoard(board){
 
         card.addEventListener("click", function(){
 
+            console.log("Card Clicked");
+            console.log("myTurn =", myTurn);
+
               if(!myTurn){
 
         return;
@@ -87,6 +94,8 @@ function createBoard(board){
         return;
 
     }
+
+    console.log("Sending Flip :", index);
 
     socket.emit("flipCard",{
 
@@ -121,8 +130,6 @@ socket.on("flipCard", function(index){
     else if(secondCard === null){
 
         secondCard = card;
-
-        checkMatch();
 
     }
 
@@ -167,3 +174,37 @@ function resetTurn(){
     lockBoard = false;
 
 }
+
+socket.on("hideCards", function(data){
+
+    const cards = document.querySelectorAll(".card-box");
+
+    cards[data.first].textContent = "?";
+
+    cards[data.second].textContent = "?";
+
+});
+socket.on("matchFound", function(data){
+
+    const cards = document.querySelectorAll(".card-box");
+
+    cards[data.first].dataset.state = "matched";
+
+    cards[data.second].dataset.state = "matched";
+
+});
+socket.on("turnUpdate", function(playerId){
+
+    if(socket.id === playerId){
+
+        myTurn = true;
+        document.getElementById("turn-text").textContent = "🟢 Your Turn";
+
+    }else{
+
+        myTurn = false;
+        document.getElementById("turn-text").textContent = "🔴 Friend's Turn";
+
+    }
+
+});
