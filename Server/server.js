@@ -167,6 +167,28 @@ io.to(data.roomCode).emit("scoreUpdate", room.scores);
 
     room.flipped = [];
 
+    if(room.matched.length === room.board.length){
+
+        let winner;
+
+        if(room.scores[0] > room.scores[1]){
+            winner = 0;
+        }
+        else if(room.scores[1] > room.scores[0]){
+            winner = 1;
+        }
+        else{
+            winner = "draw";
+        }
+
+        io.to(data.roomCode).emit("gameOver", {
+            scores: room.scores,
+            winner: winner
+        });
+
+        return;
+    }
+
     io.to(data.roomCode).emit(
         "turnUpdate",
         room.players[room.turn]

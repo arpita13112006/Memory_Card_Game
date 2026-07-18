@@ -43,6 +43,7 @@ let timerInterval = null;
 
 
 
+
 // =======================
 // EMOJIS
 // =======================
@@ -112,19 +113,19 @@ function shuffle(array){
 
 easyBtn.addEventListener("click",function(){
 
-    startGame(easyEmojis,4);
+    startGame(easyEmojis,4,"easy");
 
 });
 
 mediumBtn.addEventListener("click",function(){
 
-    startGame(mediumEmojis,6);
+    startGame(mediumEmojis,6,"medium");
 
 });
 
 hardBtn.addEventListener("click",function(){
 
-    startGame(hardEmojis,6);
+    startGame(hardEmojis,6,"hard");
 
 });
 
@@ -133,7 +134,7 @@ hardBtn.addEventListener("click",function(){
 // START GAME
 // =======================
 
-function startGame(emojiArray,columns){
+function startGame(emojiArray,columns,difficulty){
 
     difficultyScreen.style.display="none";
 
@@ -167,7 +168,7 @@ function startGame(emojiArray,columns){
 // CREATE BOARD
 // =======================
 
-function createBoard(emojiArray, columns){
+function createBoard(emojiArray, columns,difficulty){
 
     cards = [...emojiArray];
 
@@ -180,7 +181,7 @@ moves = 0;
 matchedPairs = 0;
 
     gameBoard.style.gridTemplateColumns = `repeat(${columns},100px)`;
-
+//gameBoard.className = difficulty;
     cards.forEach(function(emoji){
 
         const card = document.createElement("div");

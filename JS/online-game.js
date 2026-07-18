@@ -269,6 +269,8 @@ restartBtn.addEventListener("click", function(){
 
 socket.on("restartBoard",function(board){
 
+     document.getElementById("winner-popup").style.display = "none";
+
     firstCard = null;
     secondCard = null;
 
@@ -298,5 +300,59 @@ socket.on("restartBoard",function(board){
 socket.on("movesUpdate", function(moves){
 
     document.getElementById("moves").textContent = moves;
+
+});
+
+socket.on("gameOver", function(data){
+
+    const winnerPopup = document.getElementById("winner-popup");
+
+    const winnerTitle =
+        document.getElementById("winner-title");
+
+    const winnerScore =
+        document.getElementById("winner-score");
+
+
+    if(data.winner === "draw"){
+
+        winnerTitle.textContent = "🤝 It's a Draw!";
+
+    }
+    else if(
+        (role === "host" && data.winner === 0) ||
+        (role !== "host" && data.winner === 1)
+    ){
+
+        winnerTitle.textContent = "🏆 You Win! 🎉";
+
+    }
+    else{
+
+        winnerTitle.textContent = "😔 Friend Wins!";
+
+    }
+
+
+    winnerScore.textContent =
+        "You: " +
+        (role === "host" ? data.scores[0] : data.scores[1]) +
+        " | Friend: " +
+        (role === "host" ? data.scores[1] : data.scores[0]);
+
+
+    winnerPopup.style.display = "flex";
+
+});
+
+const playAgainBtn =
+    document.getElementById("play-again-btn");
+
+
+playAgainBtn.addEventListener("click", function(){
+
+    document.getElementById("winner-popup").style.display = "none";
+
+    socket.emit("restartGame", roomCode);
 
 });
